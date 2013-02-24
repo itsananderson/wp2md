@@ -30,4 +30,5 @@ Known Issues
 
 * Contributor names don't link to WordPress.org profiles (or anywhere, for that matter)
 * Screenshot sections are broken. They only list the screenshot titles, and don't link to the actual screenshots in any way
+* WordPress.org supports the <cite> tag, but GitHub doesn't. A conversion should probably be made
 * "Your issue here" - Bug reports and pull requests welcome!
