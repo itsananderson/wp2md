@@ -1,0 +1,1 @@
+<?php require 'wp2md.php';
