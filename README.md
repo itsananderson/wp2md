@@ -7,7 +7,7 @@ A basic utility for converting WordPress readme markdown to GitHub markdown
 Installation
 ------------
 
-To install, clone/download everything in the repository, then upload it to server.
+To install, clone/download everything in the repository, then upload it to your server (or run it on your own machine). It doesn't use a database, so as long as you've got an Apache/Nginx server with PHP, you should be able to get it running with minimal configuration.
 
 I will eventually flesh out the CLI handler, but for now it does nothing.
 
