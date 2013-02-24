@@ -12,7 +12,7 @@ To install, clone/download everything in the repository, then upload it to serve
 I will eventually flesh out the CLI handler, but for now it does nothing.
 
 
-Useage
+Usage
 ------
 
 The tool is fairly straight forward. Browse to it, and it will show you an interface where you can specify a README file to convert. You can give it a URL, upload a file, or paste into a textarea.
