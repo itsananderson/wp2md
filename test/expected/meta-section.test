@@ -1,0 +1,13 @@
+Plugin Header Test
+==================
+
+* Contributors: contributor1, contributor2
+* Donate link: http://example.com/
+* Tags: [these](http://wordpress.org/extend/plugins/tags/these), [should](http://wordpress.org/extend/plugins/tags/should), [autolink](http://wordpress.org/extend/plugins/tags/autolink)
+* Requires at least: 1.0.0
+* Tested up to: 10.0.0
+* Stable tag: 1.2.3
+* License: GPLv2 or later
+* License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+Description Line: Shouldn't be treated like metadata, even if it contains a colon
