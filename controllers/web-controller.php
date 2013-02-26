@@ -4,6 +4,17 @@ class Web_Controller {
 
 	public static $form_errors = array();
 
+	const README_URL = 'readme-url';
+	const README_TXT = 'readme-txt';
+	const README_FILE = 'readme-file';
+
+	const TMP_NAME = 'tmp_name';
+
+	const SUBMIT_TYPE = 'submit-type';
+	const SUBMIT_TYPE_URL = 'url';
+	const SUBMIT_TYPE_TEXT = 'text';
+	const SUBMIT_TYPE_FILE = 'file';
+
 	public static function is_web_request() {
 		return !defined( 'PHP_SAPI' ) || PHP_SAPI !== 'cli';
 	}
@@ -22,43 +33,40 @@ class Web_Controller {
 	}
 
 	public static function check_for_readme_txt() {
-		if ( isset( $_REQUEST['submit-type'] ) ) {
-			$submit_type = $_REQUEST['submit-type'];
-			if ( 'url' == $submit_type ) {
-				if ( empty( $_REQUEST['readme-url'] ) ) {
+		if ( isset( $_REQUEST[self::SUBMIT_TYPE] ) ) {
+			$submit_type = $_REQUEST[self::SUBMIT_TYPE];
+			if ( self::SUBMIT_TYPE_URL == $submit_type ) {
+				if ( empty( $_REQUEST[self::README_URL] ) ) {
 					self::$form_errors[] = 'You need to enter a URL for this to work';
 					return false;
 				}
 
-				$url = $_REQUEST['readme-url'];
+				$url = $_REQUEST[self::README_URL];
 
-				if ( false == filter_var( $url, FILTER_VALIDATE_URL ) ) {
-					self::$form_errors[] = 'You need to enter the URL of a valid README.txt file for this to work';
-					return false;
-				}
+				$response = Readme_Fetcher::fetch_url( $url );
 
-				$response = file_get_contents( $url );
-
-				if ( empty( $response ) ) {
-					self::$form_errors[] = 'The URL you entered is either empty, or does not exist';
+				if ( is_array( $response ) ) {
+					self::$form_errors = array_merge( self::$form_errors, $response );
 					return false;
 				}
 
 				return $response;
-			} elseif ( 'file' == $submit_type ) {
-				if ( isset( $_FILES['readme-file'] ) && !empty( $_FILES['readme-file']['tmp_name'] ) ) {
-					$content = file_get_contents( $_FILES['readme-file']['tmp_name'] );
-					if ( $content ) {
-						return $content;
+
+			} elseif ( self::SUBMIT_TYPE_FILE == $submit_type ) {
+				if ( isset( $_FILES[self::README_FILE] ) && !empty( $_FILES[self::README_FILE][self::TMP_NAME] ) ) {
+					$contents = Readme_Fetcher::fetch_file( $_FILES[self::README_FILE][self::TMP_NAME] );
+					if ( is_array( $contents ) ) {
+						self::$form_errors = array_merge( self::$form_errors, $contents );
 					} else {
-						self::$form_errors[] = 'Uploaded file seems to be empty';
+						return $contents;
 					}
+				} else {
+ 				    self::$form_errors[] = "You need to select a README.txt file to upload";
 				}
-				self::$form_errors[] = "You need to select a README.txt file to upload";
 				return false;
-			} elseif ( 'text' == $submit_type ) {
-				if ( isset( $_REQUEST['readme-txt'] ) ) {
-					$content = $_REQUEST['readme-txt'];
+			} elseif ( self::SUBMIT_TYPE_TEXT == $submit_type ) {
+				if ( isset( $_REQUEST[self::README_TXT] ) ) {
+					$content = $_REQUEST[self::README_TXT];
 					if ( !empty( $content ) ) {
 						return $content;
 					}

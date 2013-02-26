@@ -1,6 +1,5 @@
 <?php
 
-define( 'WP2MD_ROOT', dirname( __FILE__ ) );
 
 class WordPress_2_Markdown {
 	public static function start() {
@@ -14,8 +13,16 @@ class WordPress_2_Markdown {
 	}
 }
 
-require 'includes/md-converter.php';
-require 'controllers/cli-controller.php';
-require 'controllers/web-controller.php';
+require 'constants.php';
 
-WordPress_2_Markdown::start();
+// Includes
+require WP2MD_ROOT . '/includes/md-converter.php';
+require WP2MD_ROOT . '/includes/readme-fetcher.php';
+
+// Controllers
+require WP2MD_ROOT . '/controllers/cli-controller.php';
+require WP2MD_ROOT . '/controllers/web-controller.php';
+
+if ( WP2MD_AUTORUN ) {
+	WordPress_2_Markdown::start();
+}
