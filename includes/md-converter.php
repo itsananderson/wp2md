@@ -15,6 +15,9 @@ class MD_Converter {
 	}
 
 	public function convert( $content ) {
+
+		$this->new_lines = array();
+
 		$lines = preg_split( "/\r?\n/", $content );
 
 		foreach ( $lines as $line_string ) {
