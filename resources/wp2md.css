@@ -12,3 +12,27 @@ textarea {
 	background-color: #faa;
 	padding: 5px;
 }
+
+.test-results {
+	width: 100%;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+.test-results pre {
+	display: inline-block;
+}
+
+.test-results td,
+.test-results th{
+	padding: 5px;
+	border: 1px solid #555;
+}
+
+.test-results .pass {
+	background-color: #afa;
+}
+
+.test-results .fail {
+	background-color: #faa;
+}
