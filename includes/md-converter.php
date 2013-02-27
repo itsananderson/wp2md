@@ -22,16 +22,16 @@ class MD_Converter {
 
 		foreach ( $lines as $line_string ) {
 			$matches = array();
-			if ( preg_match( "/=== (.+) ===/", $line_string, $matches ) ) {
+			if ( preg_match( "/^===\\s*(.+)\\s*===/", $line_string, $matches ) ) {
 				$this->in_header_section = true;
-				$this->new_lines[] = $matches[1];
-				$this->new_lines[] = preg_replace( '/./', '=', $matches[1] );
-			} elseif ( preg_match( "/== (.+) ==/", $line_string, $matches ) ) {
+				$this->new_lines[] = trim($matches[1]);
+				$this->new_lines[] = preg_replace( '/./', '=', trim($matches[1]) );
+			} elseif ( preg_match( "/^==\\s*(.+)\\s*==/", $line_string, $matches ) ) {
 				$this->in_header_section = false;
 				$this->new_lines[] = $matches[1];
-				$this->new_lines[] = preg_replace( '/./', '-', $matches[1] );
-			} elseif ( preg_match( "/= (.+) =/", $line_string, $matches ) ) {
-				$this->new_lines[] = '#### ' . $matches[1] . ' ####';
+				$this->new_lines[] = preg_replace( '/./', '-', trim($matches[1]) );
+			} elseif ( preg_match( "/^=\\s*(.+)\\s*=/", $line_string, $matches ) ) {
+				$this->new_lines[] = '#### ' . trim( $matches[1] ) . ' ####';
 			} elseif ( self::is_header_line( $line_string ) ) {
 				$this->new_lines[] = '* ' . self::format_header_line($line_string);
 			} else {
