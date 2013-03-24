@@ -29,6 +29,7 @@ class Web_Controller {
 			$converted = $md_converter->convert( $readme_txt );
 
 			if ( isset( $_REQUEST[self::RAW] ) ) {
+				header('Content-Type: text/plain');
 				echo $converted;
 			} else {
 				self::load_view( 'conversion-result.php', array( 'converted' => $converted ) );
