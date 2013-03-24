@@ -1,5 +1,5 @@
 <?php include 'header.php'; ?>
 <textarea>
-<?php echo str_replace( '<', '&lt;', str_replace( '&', '&amp;', $converted ) ); ?>
+<?php echo esc_textarea( $converted ); ?>
 </textarea>
 <?php include 'footer.php'; ?>

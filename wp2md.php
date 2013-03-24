@@ -16,6 +16,7 @@ class WordPress_2_Markdown {
 require 'constants.php';
 
 // Includes
+require WP2MD_ROOT . '/includes/functions.php';
 require WP2MD_ROOT . '/includes/md-converter.php';
 require WP2MD_ROOT . '/includes/readme-fetcher.php';
 
