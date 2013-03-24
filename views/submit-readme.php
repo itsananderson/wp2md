@@ -26,6 +26,10 @@
 				</p>
 
 				<p>
+					<input type="checkbox" name="output-raw" value="1" /> <label for="ouput-raw">Output raw text</label>
+				</p>
+
+				<p>
 					<input type="submit" value="Submit" />
 				</p>
 			</form>

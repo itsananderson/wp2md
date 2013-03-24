@@ -15,6 +15,8 @@ class Web_Controller {
 	const SUBMIT_TYPE_TEXT = 'text';
 	const SUBMIT_TYPE_FILE = 'file';
 
+	const RAW = 'output-raw';
+
 	public static function is_web_request() {
 		return !defined( 'PHP_SAPI' ) || PHP_SAPI !== 'cli';
 	}
@@ -26,7 +28,11 @@ class Web_Controller {
 			$md_converter = new MD_Converter();
 			$converted = $md_converter->convert( $readme_txt );
 
-			self::load_view( 'conversion-result.php', array( 'converted' => $converted ) );
+			if ( isset( $_REQUEST[self::RAW] ) ) {
+				echo $converted;
+			} else {
+				self::load_view( 'conversion-result.php', array( 'converted' => $converted ) );
+			}
 		} else {
 			self::load_view( 'submit-readme.php' );
 		}
