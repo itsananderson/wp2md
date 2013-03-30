@@ -66,21 +66,18 @@ class MD_Converter {
 	}
 
 	private function handle_line( $line_string ) {
+		$matches = array();
 		if ( $this->is_header_line( $line_string ) ) {
 			$this->new_lines[] = '* ' . self::format_header_line($line_string);
-		} elseif ( 'screenshots' === $this->current_section ) {
-			if ( preg_match( '/([0-9]+)\. (.*)/', $line_string, $matches ) ) {
-				$number = $matches[1];
-				$caption = $matches[2];
-				if ( '' !== $this->new_lines[count($this->new_lines)-1] ) {
-					$this->new_lines[] = '';
-				}
-				$this->new_lines[] = "![$caption](screenshot-$number.{$this->screenshot_extension} \"$caption\")";
+		} elseif ( 'screenshots' === $this->current_section && preg_match( '/([0-9]+)\. (.*)/', $line_string, $matches ) ) {
+			$number = $matches[1];
+			$caption = $matches[2];
+			if ( '' !== $this->new_lines[count($this->new_lines)-1] ) {
 				$this->new_lines[] = '';
-				$this->new_lines[] = '*' . str_replace( '*', '&#42;', $caption ) . '*';
-			} else {
-				$this->new_lines[] = $line_string;
 			}
+			$this->new_lines[] = "![$caption](screenshot-$number.{$this->screenshot_extension} \"$caption\")";
+			$this->new_lines[] = '';
+			$this->new_lines[] = '*' . str_replace( '*', '&#42;', $caption ) . '*';
 		} else {
 			$this->new_lines[] = $line_string;
 		}
