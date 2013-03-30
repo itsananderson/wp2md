@@ -81,6 +81,11 @@ class MD_Converter {
 			} else {
 				$this->new_lines[] = $line_string;
 			}
+		} elseif( '`' === $line_string ) {
+			$this->new_lines[] = '```';
+		} elseif( false !== strpos( $line_string, '<?php' ) && '```' === $this->new_lines[count($this->new_lines)-1] ) {
+			$this->new_lines[count($this->new_lines)-1] = '```php';
+			$this->new_lines[] = $line_string;
 		} else {
 			$this->new_lines[] = $line_string;
 		}

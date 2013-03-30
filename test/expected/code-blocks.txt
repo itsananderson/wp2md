@@ -1,0 +1,18 @@
+Code Blocks
+-----------
+
+`this code should stay inline`
+
+This code `block
+should be treated as inline`, even though it's on multiple lines
+
+```
+// This code is multi-line
+// And should be treated as a multi-line block
+```
+
+```php
+<?php
+// This code starts with a <?php tag
+// It should be annotated as PHP code
+```

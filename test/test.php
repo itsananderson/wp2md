@@ -49,6 +49,7 @@ class WP2MD_Tests {
 		$input = file_get_contents( $input_path );
 		$expected_output = str_replace( "\r\n", "\n", file_get_contents( $expected_path ) );
 		$output = self::$converter->convert( $input );
+
 		if ( self::assert_equal( $test, $expected_output, $output ) ) {
 			self::output_results( $test, true );
 		}
@@ -73,7 +74,7 @@ class WP2MD_Tests {
 		if ( Cli_Controller::is_cli_request() ) {
 			echo "$test_status: $test       $message";
 		} else {
-			echo "<tr class=\"$test_status\"><td>$test_status</td><td>$test</td><td><pre>$message</pre></td></tr>";
+			echo "<tr class=\"$test_status\"><td>$test_status</td><td>$test</td><td><pre>" . esc_html( $message ) . "</pre></td></tr>";
 		}
 	}
 }
