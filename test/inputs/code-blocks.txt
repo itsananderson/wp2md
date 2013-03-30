@@ -15,3 +15,8 @@ should be treated as inline`, even though it's on multiple lines
 // This code starts with a <?php tag
 // It should be annotated as PHP code
 `
+
+`
+<p>maybe some html</p>
+<?php /* then some php */ ?>
+`
