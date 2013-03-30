@@ -7,6 +7,7 @@ class MD_Converter {
 	private $current_section_name;
 	private $new_lines = array();
 	private $link_screenshots;
+	private $screenshot_prefix;
 	private $screenshot_extension;
 
 	public function MD_Converter( $settings = array() ) {
@@ -19,14 +20,16 @@ class MD_Converter {
 
 		$settings = array_merge( self::get_default_settings(), $settings );
 
-		$this->link_screenshots = $settings['link_screenshots'];
-		$this->screenshot_extension = $settings['screenshot_extension'];
+		$this->link_screenshots = $settings['link-screenshots'];
+		$this->screenshot_prefix = $settings['screenshot-prefix'];
+		$this->screenshot_extension = $settings['screenshot-extension'];
 	}
 
 	private static function get_default_settings() {
 		return array(
-			'link_screenshots' => true,
-			'screenshot_extension' => 'png',
+			'link-screenshots' => true,
+			'screenshot-prefix' => '',
+			'screenshot-extension' => 'png',
 		);
 	}
 
@@ -69,13 +72,16 @@ class MD_Converter {
 		$matches = array();
 		if ( $this->is_header_line( $line_string ) ) {
 			$this->new_lines[] = '* ' . self::format_header_line($line_string);
-		} elseif ( 'screenshots' === $this->current_section && preg_match( '/([0-9]+)\. (.*)/', $line_string, $matches ) ) {
+		} elseif ( $this->link_screenshots
+			&& 'screenshots' === $this->current_section
+			&& preg_match( '/([0-9]+)\. (.*)/', $line_string, $matches ) ) {
+
 			$number = $matches[1];
 			$caption = $matches[2];
 			if ( '' !== $this->new_lines[count($this->new_lines)-1] ) {
 				$this->new_lines[] = '';
 			}
-			$this->new_lines[] = "![$caption](screenshot-$number.{$this->screenshot_extension} \"$caption\")";
+			$this->new_lines[] = "![$caption]({$this->screenshot_prefix}screenshot-$number.{$this->screenshot_extension} \"$caption\")";
 			$this->new_lines[] = '';
 			$this->new_lines[] = '*' . str_replace( '*', '&#42;', $caption ) . '*';
 		} elseif ( false !== strpos( $line_string, '<cite>' ) ) {
