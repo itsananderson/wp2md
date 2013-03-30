@@ -1,0 +1,8 @@
+== Screenshots ==
+
+1. These should become images
+2. With captions
+
+3 but this one shouldn't
+
+and neither should this one

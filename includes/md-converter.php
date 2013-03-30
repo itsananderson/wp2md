@@ -3,15 +3,31 @@
 class MD_Converter {
 
 	private $in_header_section;
+	private $current_section;
+	private $current_section_name;
 	private $new_lines = array();
+	private $link_screenshots;
+	private $screenshot_extension;
 
-	public function MD_Converter() {
-		$this->reset();
+	public function MD_Converter( $settings = array() ) {
+		$this->reset( $settings );
 	}
 
-	private function reset() {
+	private function reset( $settings = array() ) {
 		$this->in_header_section = false;
 		$this->new_lines = array();
+
+		$settings = array_merge( self::get_default_settings(), $settings );
+
+		$this->link_screenshots = $settings['link_screenshots'];
+		$this->screenshot_extension = $settings['screenshot_extension'];
+	}
+
+	private static function get_default_settings() {
+		return array(
+			'link_screenshots' => true,
+			'screenshot_extension' => 'png',
+		);
 	}
 
 	public function convert( $content ) {
@@ -21,27 +37,53 @@ class MD_Converter {
 		$lines = preg_split( "/\r?\n/", $content );
 
 		foreach ( $lines as $line_string ) {
+
+
 			$matches = array();
 			if ( preg_match( '/^===(.+)===$/', $line_string, $matches ) ) {
 				$this->in_header_section = true;
+				$this->current_section = '_header';
+				$this->current_section_name = trim( $matches[1] );
 				$section = trim($matches[1]);
 				$this->new_lines[] = $section;
 				$this->new_lines[] = preg_replace( '/./', '=', $section );
 			} elseif ( preg_match( '/^==(.+)==$/', $line_string, $matches ) ) {
+				$this->is_section_header = true;
 				$this->in_header_section = false;
 				$section = trim($matches[1]);
+				$this->current_section = strtolower( $section );
+				$this->current_section_name = strtolower( $section );
 				$this->new_lines[] = $section;
 				$this->new_lines[] = preg_replace( '/./', '-', $section );
 			} elseif ( preg_match( '/^=(.+)=$/', $line_string, $matches ) ) {
 				$this->new_lines[] = '#### ' . trim( $matches[1] ) . ' ####';
-			} elseif ( self::is_header_line( $line_string ) ) {
-				$this->new_lines[] = '* ' . self::format_header_line($line_string);
 			} else {
-				$this->new_lines[] = $line_string;
+				self::handle_line( $line_string );
 			}
 		}
 
 		return implode( "\n", $this->new_lines );
+	}
+
+	private function handle_line( $line_string ) {
+		if ( $this->is_header_line( $line_string ) ) {
+			$this->new_lines[] = '* ' . self::format_header_line($line_string);
+		} elseif ( 'screenshots' === $this->current_section ) {
+			if ( preg_match( '/([0-9]+)\. (.*)/', $line_string, $matches ) ) {
+				$number = $matches[1];
+				$caption = $matches[2];
+				if ( '' !== $this->new_lines[count($this->new_lines)-1] ) {
+					$this->new_lines[] = '';
+				}
+				$this->new_lines[] = "![$caption](screenshot-$number.{$this->screenshot_extension} \"$caption\")";
+				$this->new_lines[] = '';
+				$this->new_lines[] = '*' . str_replace( '*', '&#42;', $caption ) . '*';
+			} else {
+				$this->new_lines[] = $line_string;
+			}
+		} else {
+			$this->new_lines[] = $line_string;
+		}
 	}
 
 	private function is_header_line( $line ) {
