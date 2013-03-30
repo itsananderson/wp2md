@@ -1,0 +1,6 @@
+Cite
+----
+
+This is a *cite* tag.
+
+This is multiple *cite* tags on the same *line*
