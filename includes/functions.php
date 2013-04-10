@@ -19,7 +19,7 @@ if ( !function_exists( 'esc_attr' ) ) {
 
 if ( !function_exists( 'esc_textarea' ) ) {
 	function esc_textarea( $text ) {
-		return htmlspecialchars( $text, ENT_QUOTES, WP2MD_CHARSET );
+		return htmlspecialchars( $text, ENT_QUOTES );
 	}
 }
 
