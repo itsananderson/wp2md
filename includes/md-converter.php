@@ -79,13 +79,20 @@ class MD_Converter {
 			&& preg_match( '/([0-9]+)\. (.*)/', $line_string, $matches ) ) {
 
 			$number = $matches[1];
-			$caption = $matches[2];
+			$raw_caption = $matches[2];
+
+			// Replace characters that might interfere with the Markdown
+			$caption = str_replace( '*', '&#42;', $raw_caption );
+			$caption = str_replace( '[', '&#91;', $caption );
+			$caption = str_replace( ']', '&#93;', $caption );
+			$caption = str_replace( '"', '&quot;', $caption );
+
 			if ( '' !== $this->new_lines[count($this->new_lines)-1] ) {
 				$this->new_lines[] = '';
 			}
 			$this->new_lines[] = "![$caption]({$this->screenshot_prefix}screenshot-$number.{$this->screenshot_extension} \"$caption\")";
 			$this->new_lines[] = '';
-			$this->new_lines[] = '*' . str_replace( '*', '&#42;', $caption ) . '*';
+			$this->new_lines[] = '*' . $caption . '*';
 		} elseif( '`' === $line_string ) {
 			$this->in_code_block = !$this->in_code_block;
 			$this->new_lines[] = '```';

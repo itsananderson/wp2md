@@ -75,6 +75,9 @@ class Web_Controller {
 				if ( isset( $_REQUEST[self::README_TXT] ) ) {
 					$content = $_REQUEST[self::README_TXT];
 					if ( !empty( $content ) ) {
+						if ( get_magic_quotes_gpc() ) {
+							$content = stripslashes( $_REQUEST[self::README_TXT] );
+						}
 						return $content;
 					}
 					self::$form_errors[] = 'You need to paste the contents of a README.txt file to convert';

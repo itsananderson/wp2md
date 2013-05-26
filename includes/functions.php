@@ -7,19 +7,19 @@
 
 if ( !function_exists( 'esc_html' ) ) {
 	function esc_html( $text ) {
-		return htmlspecialchars( $text, ENT_NOQUOTES, WP2MD_CHARSET );
+		return htmlspecialchars( str_replace( '&', '&amp;', $text ), ENT_NOQUOTES );
 	}
 }
 
 if ( !function_exists( 'esc_attr' ) ) {
 	function esc_attr( $text ) {
-		return htmlspecialchars( $text, ENT_QUOTES, WP2MD_CHARSET );
+		return htmlspecialchars( $text, ENT_QUOTES );
 	}
 }
 
 if ( !function_exists( 'esc_textarea' ) ) {
 	function esc_textarea( $text ) {
-		return htmlspecialchars( $text, ENT_QUOTES, WP2MD_CHARSET );
+		return htmlspecialchars( $text, ENT_QUOTES );
 	}
 }
 
