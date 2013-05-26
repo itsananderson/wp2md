@@ -155,7 +155,7 @@ class MD_Converter {
 			foreach ( $tags as $tag ) {
 				$taglinks[] = "[$tag](http://wordpress.org/extend/plugins/tags/$tag)";
 			}
-			return 'Tags: ' . implode( ', ', $taglinks );
+			return 'Tags: ' . implode( ",\n  ", $taglinks );
 		}
 		return $line;
 	}

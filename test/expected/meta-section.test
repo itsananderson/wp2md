@@ -3,7 +3,9 @@ Plugin Header Test
 
 * Contributors: contributor1, contributor2
 * Donate link: http://example.com/
-* Tags: [these](http://wordpress.org/extend/plugins/tags/these), [should](http://wordpress.org/extend/plugins/tags/should), [autolink](http://wordpress.org/extend/plugins/tags/autolink)
+* Tags: [these](http://wordpress.org/extend/plugins/tags/these),
+  [should](http://wordpress.org/extend/plugins/tags/should),
+  [autolink](http://wordpress.org/extend/plugins/tags/autolink)
 * Requires at least: 1.0.0
 * Tested up to: 10.0.0
 * Stable tag: 1.2.3
