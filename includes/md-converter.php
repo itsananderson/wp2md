@@ -2,17 +2,22 @@
 
 class MD_Converter {
 
+	// State
 	private $in_header_section;
 	private $in_code_block;
 	private $current_section;
 	private $current_section_name;
+
+	// Settings
 	private $link_screenshots;
+	private $link_profiles;
 	private $screenshot_prefix;
 	private $screenshot_extension;
 	private $magic_quotes_enabled;
 
 	private $settings = array();
 
+	// Output lines
 	private $new_lines = array();
 	private $changelog_lines = array();
 
@@ -33,6 +38,7 @@ class MD_Converter {
 			$this->settings = array_merge( self::get_default_settings(), $this->settings );
 		}
 
+		$this->link_profiles = $this->settings['link-profiles'];
 		$this->link_screenshots = $this->settings['link-screenshots'];
 		$this->screenshot_prefix = $this->settings['screenshot-prefix'];
 		$this->screenshot_extension = $this->settings['screenshot-extension'];
@@ -41,6 +47,7 @@ class MD_Converter {
 
 	private static function get_default_settings() {
 		return array(
+			'link-profiles' => true,
 			'link-screenshots' => true,
 			'screenshot-prefix' => '',
 			'screenshot-extension' => 'png',
@@ -73,7 +80,7 @@ class MD_Converter {
 				$this->current_section = strtolower( $section );
 				$this->current_section_name = $section;
 
-				if ( 'changelog' == $this->current_section ) {
+				if ( $this->is_changelog_section() ) {
 					$this->changelog_lines[] = $section;
 					$this->changelog_lines[] = preg_replace( '/./', '-', $section );
 				} else {
@@ -134,12 +141,12 @@ class MD_Converter {
 			$this->new_lines[] = $line_string;
 		} elseif ( preg_match( '/^=(.+)=$/', $line_string, $matches ) ) {
 			$line = '#### ' . trim( $matches[1] ) . ' ####';
-			if ( 'changelog' == $this->current_section ) {
+			if ( $this->is_changelog_section() ) {
 				$this->changelog_lines[] = $line;
 			} else {
 				$this->new_lines[] = $line;
 			}
-		} elseif ( 'changelog' == $this->current_section ){
+		} elseif ( $this->is_changelog_section() ){
 			$this->changelog_lines[] = $line_string;
 		} else {
 			$this->new_lines[] = $line_string;
@@ -175,6 +182,10 @@ class MD_Converter {
 		return false;
 	}
 
+	private function is_changelog_section() {
+		return 'changelog' == $this->current_section;
+	}
+
 	private function format_header_line( $line ) {
 		if ( false !== stripos( $line, 'Tags:' ) ) {
 			$tags = preg_split( '/,\s*/', trim( preg_replace( '/Tags:\s*/i', '', $line ) ) );
@@ -183,6 +194,13 @@ class MD_Converter {
 				$taglinks[] = "[$tag](http://wordpress.org/extend/plugins/tags/$tag)";
 			}
 			return 'Tags: ' . implode( ",\n  ", $taglinks );
+		} elseif ( false !== strpos( $line, 'Contributors:' ) ) {
+			$contributors = preg_split( '/,\s*/', trim( preg_replace( '/Contributors:\s*/i', '', $line ) ) );
+			$contriblinks = array();
+			foreach ( $contributors as $contributor ) {
+				$contriblinks[] = "[$contributor](http://profiles.wordpress.org/$contributor)";
+			}
+			return 'Contributors: ' . implode( ",\n  ", $contriblinks );
 		}
 		return $line;
 	}
