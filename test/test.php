@@ -62,8 +62,6 @@ class WP2MD_Tests {
 	private static function assert_equal( $test, $expected, $actual, $message = '' ) {
 		if ( $expected != $actual ) {
 			$message = "Expected:\n'$expected'\nActual:\n'$actual'; $message";
-			header( 'content-type', 'text/plain' );
-			die( $message );
 			self::output_results( $test, false, $message );
 			return false;
 		}
