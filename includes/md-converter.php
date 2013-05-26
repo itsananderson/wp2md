@@ -10,6 +10,7 @@ class MD_Converter {
 	private $link_screenshots;
 	private $screenshot_prefix;
 	private $screenshot_extension;
+	private $magic_quotes_enabled;
 
 	public function MD_Converter( $settings = array() ) {
 		$this->reset( $settings );
@@ -25,6 +26,7 @@ class MD_Converter {
 		$this->link_screenshots = $settings['link-screenshots'];
 		$this->screenshot_prefix = $settings['screenshot-prefix'];
 		$this->screenshot_extension = $settings['screenshot-extension'];
+		$this->magic_quotes_enabled = $settings['magic-quotes-enabled'];
 	}
 
 	private static function get_default_settings() {
@@ -32,6 +34,7 @@ class MD_Converter {
 			'link-screenshots' => true,
 			'screenshot-prefix' => '',
 			'screenshot-extension' => 'png',
+			'magic-quotes-enabled' => get_magic_quotes_gpc(),
 		);
 	}
 
@@ -39,11 +42,13 @@ class MD_Converter {
 
 		$this->new_lines = array();
 
+		if ( $this->magic_quotes_enabled ) {
+			$content = stripslashes( $content );
+		}
+
 		$lines = preg_split( "/\r?\n/", $content );
 
 		foreach ( $lines as $line_string ) {
-
-
 			$matches = array();
 			if ( preg_match( '/^===(.+)===$/', $line_string, $matches ) ) {
 				$this->in_header_section = true;
