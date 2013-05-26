@@ -1,0 +1,14 @@
+=== Changelog Test ===
+
+This tests changelog handling
+
+== Changelog ==
+
+= 1.0 =
+
+* Change1
+* Change2
+
+== Screenshots ==
+
+1. Screenshots section

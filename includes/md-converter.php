@@ -6,11 +6,15 @@ class MD_Converter {
 	private $in_code_block;
 	private $current_section;
 	private $current_section_name;
-	private $new_lines = array();
 	private $link_screenshots;
 	private $screenshot_prefix;
 	private $screenshot_extension;
 	private $magic_quotes_enabled;
+
+	private $settings = array();
+
+	private $new_lines = array();
+	private $changelog_lines = array();
 
 	public function MD_Converter( $settings = array() ) {
 		$this->reset( $settings );
@@ -19,14 +23,20 @@ class MD_Converter {
 	private function reset( $settings = array() ) {
 		$this->in_header_section = false;
 		$this->in_code_block = false;
+
 		$this->new_lines = array();
+		$this->changelog_lines = array();
 
-		$settings = array_merge( self::get_default_settings(), $settings );
+		if ( !empty( $settings ) ) {
+			$this->settings = array_merge( self::get_default_settings(), $settings );
+		} else {
+			$this->settings = array_merge( self::get_default_settings(), $this->settings );
+		}
 
-		$this->link_screenshots = $settings['link-screenshots'];
-		$this->screenshot_prefix = $settings['screenshot-prefix'];
-		$this->screenshot_extension = $settings['screenshot-extension'];
-		$this->magic_quotes_enabled = $settings['magic-quotes-enabled'];
+		$this->link_screenshots = $this->settings['link-screenshots'];
+		$this->screenshot_prefix = $this->settings['screenshot-prefix'];
+		$this->screenshot_extension = $this->settings['screenshot-extension'];
+		$this->magic_quotes_enabled = $this->settings['magic-quotes-enabled'];
 	}
 
 	private static function get_default_settings() {
@@ -40,7 +50,7 @@ class MD_Converter {
 
 	public function convert( $content ) {
 
-		$this->new_lines = array();
+		$this->reset();
 
 		if ( $this->magic_quotes_enabled ) {
 			$content = stripslashes( $content );
@@ -58,21 +68,29 @@ class MD_Converter {
 				$this->new_lines[] = $section;
 				$this->new_lines[] = preg_replace( '/./', '=', $section );
 			} elseif ( preg_match( '/^==(.+)==$/', $line_string, $matches ) ) {
-				$this->is_section_header = true;
 				$this->in_header_section = false;
 				$section = trim($matches[1]);
 				$this->current_section = strtolower( $section );
-				$this->current_section_name = strtolower( $section );
-				$this->new_lines[] = $section;
-				$this->new_lines[] = preg_replace( '/./', '-', $section );
-			} elseif ( preg_match( '/^=(.+)=$/', $line_string, $matches ) ) {
-				$this->new_lines[] = '#### ' . trim( $matches[1] ) . ' ####';
+				$this->current_section_name = $section;
+
+				if ( 'changelog' == $this->current_section ) {
+					$this->changelog_lines[] = $section;
+					$this->changelog_lines[] = preg_replace( '/./', '-', $section );
+				} else {
+					$this->new_lines[] = $section;
+					$this->new_lines[] = preg_replace( '/./', '-', $section );
+				}
 			} else {
 				self::handle_line( $line_string );
 			}
 		}
 
-		return implode( "\n", $this->new_lines );
+		$output = implode( "\n", $this->new_lines );
+		$changelog_text = trim( implode( "\n", $this->changelog_lines ) );
+		if ( !empty( $changelog_text ) ) {
+			$output = trim( $output ) . "\n\n" . $changelog_text;
+		}
+		return $output;
 	}
 
 	private function handle_line( $line_string ) {
@@ -114,6 +132,15 @@ class MD_Converter {
 				}
 			}
 			$this->new_lines[] = $line_string;
+		} elseif ( preg_match( '/^=(.+)=$/', $line_string, $matches ) ) {
+			$line = '#### ' . trim( $matches[1] ) . ' ####';
+			if ( 'changelog' == $this->current_section ) {
+				$this->changelog_lines[] = $line;
+			} else {
+				$this->new_lines[] = $line;
+			}
+		} elseif ( 'changelog' == $this->current_section ){
+			$this->changelog_lines[] = $line_string;
 		} else {
 			$this->new_lines[] = $line_string;
 		}
