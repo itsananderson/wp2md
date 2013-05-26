@@ -28,5 +28,5 @@ A few examples you can try out:
 Known Issues
 ------------
 
-- Non-default section should be grouped under an "Other Notes" section
+- Non-default sections should be grouped under an "Other Notes" section
 - Video embeds [youtube] [vimeo] and [wpvideo] aren't handled gracefully
