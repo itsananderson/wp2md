@@ -92,7 +92,11 @@ class MD_Converter {
 			}
 			$this->new_lines[] = "![$caption]({$this->screenshot_prefix}screenshot-$number.{$this->screenshot_extension} \"$caption\")";
 			$this->new_lines[] = '';
-			$this->new_lines[] = '*' . $caption . '*';
+			$this->new_lines[] = '*' . str_replace( '*', '&#42;', $caption ) . '*';
+		} elseif ( false !== strpos( $line_string, '<cite>' ) ) {
+			$replaced = str_replace( '<cite>', '*', $line_string );
+			$replaced = str_replace( '</cite>', '*', $replaced );
+			$this->new_lines[] = $replaced;
 		} elseif( '`' === $line_string ) {
 			$this->in_code_block = !$this->in_code_block;
 			$this->new_lines[] = '```';
