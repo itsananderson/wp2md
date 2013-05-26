@@ -7,7 +7,7 @@
 
 if ( !function_exists( 'esc_html' ) ) {
 	function esc_html( $text ) {
-		return htmlspecialchars( $text, ENT_NOQUOTES, WP2MD_CHARSET );
+		return htmlspecialchars( str_replace( '&', '&amp;', $text ), ENT_NOQUOTES, WP2MD_CHARSET );
 	}
 }
 

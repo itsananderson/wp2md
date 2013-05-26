@@ -1,0 +1,15 @@
+Screenshots
+-----------
+
+![These should become images](screenshot-1.png "These should become images")  
+*These should become images*
+
+![With captions](screenshot-2.png "With captions")  
+*With captions*
+
+![This caption should &#42; &#91;escape&#93; the "asterisk" and "square brackets"](screenshot-3.png "This caption should * [escape] the "asterisk" and "square brackets"")  
+*This caption should &#42; &#91;escape&#93; the "asterisk" and "square brackets"*
+
+3 but this one shouldn't
+
+and neither should this one
