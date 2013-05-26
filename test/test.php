@@ -18,12 +18,19 @@ class WP2MD_Tests {
 			echo '<table class="test-results"><tr><th>Pass/Fail</th><th>Test Name</th><th>Message</th></tr>';
 		}
 
+		$ignore_extension = '.custom';
+
 		$tests = scandir(self::INPUT_DIR);
 		foreach($tests as $test) {
-			if ( '.' != $test && '..' != $test ) {
+			if ( '.' != $test
+				 && '..' != $test
+				 && substr_compare( $test, $ignore_extension, -strlen($ignore_extension), strlen($ignore_extension) ) ) {
 				self::run_test( $test );
 			}
 		}
+
+		// Custom tests
+		self::test_escape_quotes();
 
 		if ( Web_Controller::is_web_request() ) {
 			echo '</table>';
@@ -31,7 +38,11 @@ class WP2MD_Tests {
 		}
 	}
 
-	private static function run_test( $test ) {
+	/***
+	 * @param string $test The name of the test to run
+	 * @param bool|MD_Converter $converter
+	 */
+	private static function run_test( $test, $converter = false ) {
 
 		$input_path = self::INPUT_DIR . '/' . $test;
 		$expected_path = self::EXPECTED_DIR . '/' . $test;
@@ -48,11 +59,22 @@ class WP2MD_Tests {
 
 		$input = file_get_contents( $input_path );
 		$expected_output = str_replace( "\r\n", "\n", file_get_contents( $expected_path ) );
-		$output = self::$converter->convert( $input );
+
+		$converter = $converter ? $converter : self::$converter;
+		$output = $converter->convert( $input );
 
 		if ( self::assert_equal( $test, $expected_output, $output ) ) {
 			self::output_results( $test, true );
 		}
+	}
+
+	private static function test_escape_quotes() {
+		$magic_converter = new MD_Converter( array( 'magic-quotes-enabled' => true ) );
+		self::run_test( 'escape-quotes.custom', $magic_converter );
+
+
+		$non_magic_converter = new MD_Converter( array( 'magic-quotes-enabled' => false ) );
+		self::run_test( 'non-escape-quotes.custom', $non_magic_converter );
 	}
 
 	private static function fail( $test, $message = '' ) {

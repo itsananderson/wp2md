@@ -1,0 +1,3 @@
+=== Non Magic Quotes ===
+
+If magic quotes aren't enabled, don't strip \'slashes\'
