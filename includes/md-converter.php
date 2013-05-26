@@ -3,6 +3,7 @@
 class MD_Converter {
 
 	private $in_header_section;
+	private $in_code_block;
 	private $current_section;
 	private $current_section_name;
 	private $new_lines = array();
@@ -16,6 +17,7 @@ class MD_Converter {
 
 	private function reset( $settings = array() ) {
 		$this->in_header_section = false;
+		$this->in_code_block = false;
 		$this->new_lines = array();
 
 		$settings = array_merge( self::get_default_settings(), $settings );
@@ -77,7 +79,14 @@ class MD_Converter {
 			&& preg_match( '/([0-9]+)\. (.*)/', $line_string, $matches ) ) {
 
 			$number = $matches[1];
-			$caption = $matches[2];
+			$raw_caption = $matches[2];
+
+			// Replace characters that might interfere with the Markdown
+			$caption = str_replace( '*', '&#42;', $raw_caption );
+			$caption = str_replace( '[', '&#91;', $caption );
+			$caption = str_replace( ']', '&#93;', $caption );
+			$caption = str_replace( '"', '&quot;', $caption );
+
 			if ( '' !== $this->new_lines[count($this->new_lines)-1] ) {
 				$this->new_lines[] = '';
 			}
@@ -88,6 +97,18 @@ class MD_Converter {
 			$replaced = str_replace( '<cite>', '*', $line_string );
 			$replaced = str_replace( '</cite>', '*', $replaced );
 			$this->new_lines[] = $replaced;
+		} elseif( '`' === $line_string ) {
+			$this->in_code_block = !$this->in_code_block;
+			$this->new_lines[] = '```';
+		} elseif( false !== strpos( $line_string, '<?php' ) ) {
+			// Go back until we find the beginning of the block
+			for ( $i = count( $this->new_lines ) - 1; $i >= 0; $i-- ) {
+				if ( 0 === strpos( $this->new_lines[$i], '```' ) ) {
+					$this->new_lines[$i] = '```php';
+					break;
+				}
+			}
+			$this->new_lines[] = $line_string;
 		} else {
 			$this->new_lines[] = $line_string;
 		}

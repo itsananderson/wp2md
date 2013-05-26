@@ -9,6 +9,10 @@ Screenshots
 
 *With captions*
 
+![This caption should &#42; &#91;escape&#93; the &quot;asterisk&quot; and &quot;square brackets&quot;](screenshot-3.png "This caption should &#42; &#91;escape&#93; the &quot;asterisk&quot; and &quot;square brackets&quot;")
+
+*This caption should &#42; &#91;escape&#93; the &quot;asterisk&quot; and &quot;square brackets&quot;*
+
 3 but this one shouldn't
 
 and neither should this one

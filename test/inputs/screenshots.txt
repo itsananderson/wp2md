@@ -2,6 +2,7 @@
 
 1. These should become images
 2. With captions
+3. This caption should * [escape] the "asterisk" and "square brackets"
 
 3 but this one shouldn't
 
