@@ -39,3 +39,11 @@ https://www.vimeo.com/173714
 Text before https://www.vimeo.com/173714 text after
 
 Text before https://www.vimeo.com/173714. With a period
+
+= VideoPress =
+
+[wpvideo OO4thna8]
+
+Before video [wpvideo OO4thna8] and after
+
+Before video [wpvideo OO4thna8]. With a period

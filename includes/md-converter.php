@@ -193,6 +193,15 @@ class MD_Converter {
 			$video_info = $video_info[0];
 
 			$this->new_lines[] = "{$before_video}<a href=\"$video_url\" target=\"_blank\"><img src=\"{$video_info->thumbnail_large}\" alt=\"\" width=\"240\" height=\"180\" /></a>{$after_video}";
+		} elseif( preg_match( '/^(.*)\[wpvideo\s([^\]]+)\](.*)$/', $line_string, $matches ) ) {
+			$before_video = $matches[1];
+			$video_guid = trim( $matches[2] );
+			$after_video = $matches[3];
+
+			$video_url = "http://videos.videopress.com/{$video_guid}/videopress2-web2.mp4";
+			$video_image_url = "http://videos.videopress.com/{$video_guid}/videopress2-web2.original.jpg";
+
+			$this->new_lines[] = "{$before_video}<a href=\"$video_url\" target=\"_blank\"><img src=\"{$video_image_url}\" alt=\"\" width=\"240\" height=\"180\" /></a>{$after_video}";
 		} else {
 			$this->new_lines[] = $line_string;
 		}

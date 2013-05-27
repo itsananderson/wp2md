@@ -41,3 +41,11 @@ Before video <a href="http://vimeo.com/173714" target="_blank"><img src="http://
 Text before <a href="https://www.vimeo.com/173714" target="_blank"><img src="http://b.vimeocdn.com/ts/209/721/20972155_640.jpg" alt="" width="240" height="180" /></a> text after
 
 Text before <a href="https://www.vimeo.com/173714" target="_blank"><img src="http://b.vimeocdn.com/ts/209/721/20972155_640.jpg" alt="" width="240" height="180" /></a>. With a period
+
+#### VideoPress ####
+
+<a href="http://videos.videopress.com/OO4thna8/videopress2-web2.mp4" target="_blank"><img src="http://videos.videopress.com/OO4thna8/videopress2-web2.original.jpg" alt="" width="240" height="180" /></a>
+
+Before video <a href="http://videos.videopress.com/OO4thna8/videopress2-web2.mp4" target="_blank"><img src="http://videos.videopress.com/OO4thna8/videopress2-web2.original.jpg" alt="" width="240" height="180" /></a> and after
+
+Before video <a href="http://videos.videopress.com/OO4thna8/videopress2-web2.mp4" target="_blank"><img src="http://videos.videopress.com/OO4thna8/videopress2-web2.original.jpg" alt="" width="240" height="180" /></a>. With a period
