@@ -148,6 +148,51 @@ class MD_Converter {
 			}
 		} elseif ( $this->is_changelog_section() ){
 			$this->changelog_lines[] = $line_string;
+		} elseif( preg_match( '/^(.*)\[youtube\s([^\]]+)\](.*)$/', $line_string, $matches )
+			|| preg_match( '/^(.*)(https?:\/\/(?:www\.)?youtube.com\/watch\?[^\s]+)(.*)/', $line_string, $matches ) ) {
+			$before_video = $matches[1];
+			$video_url = $matches[2];
+			$after_video = $matches[3];
+
+			// Special case for video link at the end of a sentence
+			if ( '.' == substr( $video_url, -1 ) ) {
+				$video_url = substr( $video_url, 0, strlen( $video_url ) - 1 );
+				$after_video = '.' . $after_video;
+			}
+
+			$video_args_string = substr( $video_url, strpos( $video_url, '?' ) + 1 );
+			$video_args = explode( '&', $video_args_string );
+			$video_id = '';
+			foreach ( $video_args as $arg_string ) {
+				$arg_parts = explode( '=', $arg_string );
+				if ( count( $arg_parts ) > 1 && 'v' == $arg_parts[0] ) {
+					$video_id = $arg_parts[1];
+				}
+			}
+			$this->new_lines[] = "{$before_video}<a href=\"$video_url\" target=\"_blank\"><img src=\"https://img.youtube.com/vi/{$video_id}/0.jpg\" alt=\"\" width=\"240\" height=\"180\" /></a>{$after_video}";
+		} elseif( preg_match( '/^(.*)\[vimeo\s([^\]]+)\](.*)$/', $line_string, $matches )
+			|| preg_match( '/^(.*)(https?:\/\/(?:www\.)?vimeo.com\/[^\s]+)(.*)$/', $line_string, $matches ) ) {
+			$before_video = $matches[1];
+			$video_url = $matches[2];
+			$after_video = $matches[3];
+
+			// Special case for video link at the end of a sentence
+			if ( '.' == substr( $video_url, -1 ) ) {
+				$video_url = substr( $video_url, 0, strlen( $video_url ) - 1 );
+				$after_video = '.' . $after_video;
+			}
+
+			preg_match( '/\d+/', $video_url, $matches );
+			if ( !count( $matches ) ) {
+				$this->new_lines[] = "{$before_video}{$video_url}{$after_video}";
+			}
+			$video_id = $matches[0];
+
+			$video_info_string = Readme_Fetcher::fetch_url("http://vimeo.com/api/v2/video/{$video_id}.json");
+			$video_info = json_decode( $video_info_string );
+			$video_info = $video_info[0];
+
+			$this->new_lines[] = "{$before_video}<a href=\"$video_url\" target=\"_blank\"><img src=\"{$video_info->thumbnail_large}\" alt=\"\" width=\"240\" height=\"180\" /></a>{$after_video}";
 		} else {
 			$this->new_lines[] = $line_string;
 		}

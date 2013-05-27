@@ -1,0 +1,43 @@
+Video Embeds
+============
+
+Basic test of various video embeds
+
+Description
+-----------
+
+#### YouTube Videos ####
+
+<a href="http://www.youtube.com/watch?v=bW6Y_CBQJNI" target="_blank"><img src="https://img.youtube.com/vi/bW6Y_CBQJNI/0.jpg" alt="" width="240" height="180" /></a>
+
+Before video <a href="http://www.youtube.com/watch?v=bW6Y_CBQJNI" target="_blank"><img src="https://img.youtube.com/vi/bW6Y_CBQJNI/0.jpg" alt="" width="240" height="180" /></a> after video
+
+Just the URL:
+
+<a href="http://www.youtube.com/watch?v=bW6Y_CBQJNI" target="_blank"><img src="https://img.youtube.com/vi/bW6Y_CBQJNI/0.jpg" alt="" width="240" height="180" /></a>
+
+<a href="http://youtube.com/watch?v=bW6Y_CBQJNI" target="_blank"><img src="https://img.youtube.com/vi/bW6Y_CBQJNI/0.jpg" alt="" width="240" height="180" /></a>
+
+<a href="https://www.youtube.com/watch?v=bW6Y_CBQJNI" target="_blank"><img src="https://img.youtube.com/vi/bW6Y_CBQJNI/0.jpg" alt="" width="240" height="180" /></a>
+
+<a href="https://youtube.com/watch?v=bW6Y_CBQJNI" target="_blank"><img src="https://img.youtube.com/vi/bW6Y_CBQJNI/0.jpg" alt="" width="240" height="180" /></a>
+
+Text before <a href="https://youtube.com/watch?v=bW6Y_CBQJNI" target="_blank"><img src="https://img.youtube.com/vi/bW6Y_CBQJNI/0.jpg" alt="" width="240" height="180" /></a> text after
+
+Text before <a href="https://youtube.com/watch?v=bW6Y_CBQJNI" target="_blank"><img src="https://img.youtube.com/vi/bW6Y_CBQJNI/0.jpg" alt="" width="240" height="180" /></a>. With a period
+
+#### Vimeo Videos ####
+
+<a href="http://vimeo.com/173714" target="_blank"><img src="http://b.vimeocdn.com/ts/209/721/20972155_640.jpg" alt="" width="240" height="180" /></a>
+
+Before video <a href="http://vimeo.com/173714" target="_blank"><img src="http://b.vimeocdn.com/ts/209/721/20972155_640.jpg" alt="" width="240" height="180" /></a> after video
+
+<a href="http://vimeo.com/173714" target="_blank"><img src="http://b.vimeocdn.com/ts/209/721/20972155_640.jpg" alt="" width="240" height="180" /></a>
+
+<a href="https://vimeo.com/173714" target="_blank"><img src="http://b.vimeocdn.com/ts/209/721/20972155_640.jpg" alt="" width="240" height="180" /></a>
+
+<a href="https://www.vimeo.com/173714" target="_blank"><img src="http://b.vimeocdn.com/ts/209/721/20972155_640.jpg" alt="" width="240" height="180" /></a>
+
+Text before <a href="https://www.vimeo.com/173714" target="_blank"><img src="http://b.vimeocdn.com/ts/209/721/20972155_640.jpg" alt="" width="240" height="180" /></a> text after
+
+Text before <a href="https://www.vimeo.com/173714" target="_blank"><img src="http://b.vimeocdn.com/ts/209/721/20972155_640.jpg" alt="" width="240" height="180" /></a>. With a period
